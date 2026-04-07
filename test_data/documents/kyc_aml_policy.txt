@@ -1,0 +1,25 @@
+KYC AND AML COMPLIANCE POLICY — ACME BANK
+Effective Date: January 15, 2025
+Department: Compliance
+Classification: Confidential
+
+1. CUSTOMER DUE DILIGENCE (CDD)
+All new customers must undergo standard CDD before account opening. CDD includes verification of identity using government-issued photo ID, proof of address, and source of funds declaration. Simplified Due Diligence (SDD) may be applied for low-risk customers with transaction volumes below $5,000 per month. Enhanced Due Diligence (EDD) is mandatory for Politically Exposed Persons (PEPs), customers from high-risk jurisdictions listed by FATF, and customers with complex ownership structures.
+
+2. ENHANCED DUE DILIGENCE (EDD) REQUIREMENTS
+EDD requires senior management approval for account opening. Additional documentation includes source of wealth declaration, beneficial ownership identification for entities with 25% or more ownership, and ongoing monitoring with quarterly reviews. High-risk jurisdictions include countries on the FATF grey list and black list. Correspondent banking relationships require full EDD regardless of jurisdiction.
+
+3. TRANSACTION MONITORING AND REPORTING
+Currency Transaction Reports (CTRs) must be filed for all cash transactions exceeding $10,000 in a single business day. Structuring detection algorithms monitor for transactions designed to avoid the $10,000 reporting threshold. Suspicious Activity Reports (SARs) must be filed within 30 days of detection. The bank must retain all transaction records for a minimum of 5 years from the date of the transaction.
+
+4. SANCTIONS SCREENING
+All customers and transactions are screened against OFAC SDN (Specially Designated Nationals) list, UN Security Council sanctions list, EU consolidated sanctions list, and UK HM Treasury sanctions list. Screening is performed at account opening, for every wire transfer, and on a daily batch basis for existing customers. Positive matches must be escalated to the Compliance Officer within 4 hours.
+
+5. RISK CLASSIFICATION
+Customers are classified into three risk tiers: Low Risk (standard retail customers with domestic transactions), Medium Risk (business accounts, international transactions, cash-intensive businesses), and High Risk (PEPs, customers from high-risk jurisdictions, MSBs, cryptocurrency-related businesses). Risk classification is reviewed annually or upon trigger events such as unusual transaction patterns.
+
+6. TRAINING AND AWARENESS
+All employees must complete AML/KYC training within 30 days of joining and annually thereafter. Compliance officers must obtain CAMS (Certified Anti-Money Laundering Specialist) certification within 12 months of appointment. Training records must be maintained for 5 years. The bank conducts annual independent AML program audits.
+
+7. PENALTIES FOR NON-COMPLIANCE
+Regulatory fines for AML violations can range from $25,000 to $1,000,000 per violation per day. Individual officers may face criminal prosecution with penalties up to 10 years imprisonment. The bank maintains a compliance budget of $2.5 million annually for AML program operations.

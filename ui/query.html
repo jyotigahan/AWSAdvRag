@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Query (AWS)</title>
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<div class="container">
+  <h1>🔍 Ask Your Documents</h1>
+  <form id="queryForm">
+    <div class="form-group">
+      <label for="question">Your Question</label>
+      <textarea id="question" rows="3" placeholder="What would you like to know?" required></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="role">Your Role</label>
+        <select id="role">
+          <option value="admin">Admin</option>
+          <option value="manager">Manager</option>
+          <option value="employee" selected>Employee</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dept">Department</label>
+        <select id="dept">
+          <option value="">All</option>
+          <option value="finance">Finance</option>
+          <option value="engineering">Engineering</option>
+          <option value="hr">HR</option>
+          <option value="legal">Legal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="reranker">Reranker</label>
+        <select id="reranker">
+          <option value="llm">LLM (Claude)</option>
+          <option value="cross-encoder">Cross-Encoder</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" id="queryBtn">Ask</button>
+  </form>
+  <div id="result" hidden>
+    <div class="result-section">
+      <h3>Answer</h3>
+      <p id="answer"></p>
+    </div>
+    <div class="result-section">
+      <h3>Rewritten Query</h3>
+      <p id="rewritten"></p>
+    </div>
+    <div class="result-section">
+      <h3>Sources</h3>
+      <p id="sources"></p>
+    </div>
+  </div>
+</div>
+<script>
+const API_BASE = window.location.origin + "/api"; // Local server or replace with API Gateway URL
+
+document.getElementById("queryForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("queryBtn");
+  const result = document.getElementById("result");
+
+  btn.disabled = true;
+  btn.textContent = "Thinking...";
+
+  try {
+    const res = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        question: document.getElementById("question").value,
+        user_role: document.getElementById("role").value,
+        user_department: document.getElementById("dept").value || null,
+        reranker: document.getElementById("reranker").value,
+      }),
+    });
+    const data = await res.json();
+
+    document.getElementById("answer").textContent = data.answer;
+    document.getElementById("rewritten").textContent = data.rewritten_query;
+    document.getElementById("sources").textContent = data.sources.join(", ") || "None";
+    result.hidden = false;
+  } catch (err) {
+    alert("Query failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Ask";
+  }
+});
+</script>
+</body></html>

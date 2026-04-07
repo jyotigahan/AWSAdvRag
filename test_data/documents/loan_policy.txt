@@ -1,0 +1,22 @@
+LOAN POLICY DOCUMENT — ACME BANK
+Effective Date: January 1, 2025
+Department: Lending
+Classification: Internal
+
+1. PERSONAL LOAN ELIGIBILITY
+Applicants must be at least 21 years of age and not older than 60 years at the time of loan maturity. Minimum annual income requirement is $30,000 for salaried employees and $50,000 for self-employed individuals. A minimum credit score of 680 is required for personal loan approval. Applicants with credit scores between 620 and 679 may be considered with additional collateral or a co-signer.
+
+2. INTEREST RATES
+Personal loan interest rates range from 8.5% to 14.99% per annum depending on the applicant's credit profile. Fixed rate loans are available for tenures of 12, 24, 36, 48, and 60 months. Variable rate loans are benchmarked to the Federal Funds Rate plus a margin of 3.5% to 8.5%. Rate lock facility is available for 30 days from the date of pre-approval at a fee of 0.25% of the loan amount.
+
+3. LOAN LIMITS
+Minimum personal loan amount is $5,000. Maximum personal loan amount is $50,000 for unsecured loans. Secured personal loans backed by fixed deposits or securities can go up to $200,000. Debt-to-income ratio must not exceed 43% including the proposed loan EMI.
+
+4. PROCESSING AND FEES
+Loan processing fee is 1.5% of the sanctioned amount, minimum $150. Late payment penalty is 2% of the overdue EMI amount or $25, whichever is higher. Prepayment penalty for fixed rate loans is 3% of the outstanding principal if closed within the first 12 months, 2% if closed between 12-24 months, and zero thereafter. No prepayment penalty applies to variable rate loans.
+
+5. DOCUMENTATION REQUIREMENTS
+Required documents include government-issued photo ID, proof of address not older than 3 months, last 3 months bank statements, last 2 years income tax returns, and employment verification letter for salaried applicants. Self-employed applicants must additionally provide business registration certificate, last 2 years audited financial statements, and GST returns for the last 4 quarters.
+
+6. DISBURSEMENT
+Loan disbursement occurs within 3-5 business days of final approval. Funds are credited directly to the borrower's ACME Bank savings or current account. For amounts exceeding $100,000, disbursement may be done in tranches as per the loan agreement.

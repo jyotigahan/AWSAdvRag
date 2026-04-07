@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Metrics Dashboard</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
+.header { background: #161b22; padding: 1rem 2rem; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 1.3rem; color: #ff9900; }
+.header .refresh { background: #238636; color: white; border: none; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+.header .refresh:hover { background: #2ea043; }
+.container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+.section-title { font-size: 1rem; color: #8b949e; margin: 1.5rem 0 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #30363d; padding-bottom: 0.4rem; }
+
+/* Cards */
+.cards { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem 1.2rem; min-width: 140px; flex: 1; }
+.card .label { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+.card .value { font-size: 1.8rem; font-weight: bold; margin-top: 0.3rem; }
+.card .sub { font-size: 0.75rem; color: #8b949e; margin-top: 0.2rem; }
+.good { color: #3fb950; }
+.warn { color: #d29922; }
+.bad { color: #f85149; }
+.neutral { color: #e6edf3; }
+.accent { color: #ff9900; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; background: #161b22; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; border: 1px solid #30363d; }
+th { background: #21262d; color: #8b949e; padding: 0.6rem 0.8rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 0.5rem 0.8rem; border-top: 1px solid #30363d; font-size: 0.85rem; }
+tr:hover { background: #1c2128; }
+.score-cell { text-align: center; font-weight: bold; }
+
+/* Bar chart */
+.bar-container { display: flex; align-items: center; gap: 0.5rem; margin: 0.3rem 0; }
+.bar-label { width: 130px; font-size: 0.8rem; color: #8b949e; text-align: right; }
+.bar-track { flex: 1; height: 22px; background: #21262d; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.75rem; font-weight: bold; color: white; min-width: 40px; }
+.bar-value { width: 50px; font-size: 0.8rem; text-align: right; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+.panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem; }
+.panel h3 { font-size: 0.85rem; color: #8b949e; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.empty { color: #484f58; font-style: italic; padding: 2rem; text-align: center; }
+</style>
+</head><body>
+<div class="header">
+  <h1>📊 RAG Metrics Dashboard</h1>
+  <div>
+    <span id="lastUpdate" style="color:#8b949e;font-size:0.8rem;margin-right:1rem;"></span>
+    <button class="refresh" onclick="loadMetrics()">↻ Refresh</button>
+  </div>
+</div>
+<div class="container">
+  <!-- RAGAS Quality -->
+  <div class="section-title">RAGAS Quality Metrics</div>
+  <div id="ragasCards" class="cards"></div>
+  <div id="ragasBars"></div>
+
+  <!-- LLM Usage -->
+  <div class="section-title">LLM Token Usage & Cost</div>
+  <div id="llmCards" class="cards"></div>
+  <div id="llmTable"></div>
+
+  <div class="grid-2">
+    <!-- Ingestion -->
+    <div>
+      <div class="section-title">Ingestion Pipeline</div>
+      <div id="ingestionCards" class="cards"></div>
+      <div id="ingestionTable"></div>
+    </div>
+    <!-- Retrieval -->
+    <div>
+      <div class="section-title">Retrieval Performance</div>
+      <div id="retrievalCards" class="cards"></div>
+      <div id="retrievalTable"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const THRESHOLDS = {
+  "Faithfulness": [0.5, 0.7, 0.85],
+  "Groundedness": [2.5, 3.5, 4.2],
+  "Context Precision": [0.4, 0.6, 0.8],
+  "Context Recall": [0.4, 0.6, 0.8],
+  "Answer Relevance": [0.5, 0.7, 0.85],
+  "Answer Correctness": [0.4, 0.6, 0.8],
+  "Answer Similarity": [0.5, 0.65, 0.8],
+  "Aspect Critique": [0.5, 0.7, 0.85],
+};
+
+function scoreClass(name, val) {
+  const t = THRESHOLDS[name] || [0.4, 0.6, 0.8];
+  if (val >= t[2]) return "good";
+  if (val >= t[1]) return "warn";
+  return "bad";
+}
+
+function barColor(name, val) {
+  const cls = scoreClass(name, val);
+  return cls === "good" ? "#3fb950" : cls === "warn" ? "#d29922" : "#f85149";
+}
+
+function renderRagas(data) {
+  const entries = data.ragas || [];
+  if (!entries.length) {
+    document.getElementById("ragasCards").innerHTML = '<div class="empty">No RAGAS data yet. Run: python evals/run_evals.py</div>';
+    return;
+  }
+  // Use the latest summary or average all entries
+  const summaries = entries.filter(e => e.type === "summary");
+  const perQuestion = entries.filter(e => !e.type);
+  const avgs = summaries.length ? summaries[summaries.length - 1].avg_scores : {};
+
+  if (!Object.keys(avgs).length && perQuestion.length) {
+    const names = Object.keys(perQuestion[0].scores || {});
+    names.forEach(n => { avgs[n] = perQuestion.reduce((s, e) => s + (e.scores[n] || 0), 0) / perQuestion.length; });
+  }
+
+  let cards = "";
+  let bars = "";
+  const maxVal = name => name === "Groundedness" ? 5 : 1;
+
+  Object.entries(avgs).forEach(([name, val]) => {
+    const cls = scoreClass(name, val);
+    const pct = (val / maxVal(name)) * 100;
+    cards += `<div class="card"><div class="label">${name}</div><div class="value ${cls}">${val.toFixed(3)}</div><div class="sub">${maxVal(name) === 5 ? "/5" : "/1.0"}</div></div>`;
+    bars += `<div class="bar-container"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barColor(name, val)}">${val.toFixed(3)}</div></div></div>`;
+  });
+
+  const overall = Object.values(avgs).reduce((a, b) => a + b, 0) / Object.keys(avgs).length;
+  cards += `<div class="card"><div class="label">Overall</div><div class="value accent">${overall.toFixed(3)}</div><div class="sub">${perQuestion.length} questions</div></div>`;
+
+  document.getElementById("ragasCards").innerHTML = cards;
+  document.getElementById("ragasBars").innerHTML = `<div class="panel">${bars}</div>`;
+}
+
+function renderLLM(data) {
+  const entries = data.llm || [];
+  if (!entries.length) {
+    document.getElementById("llmCards").innerHTML = '<div class="empty">No LLM usage data yet.</div>';
+    return;
+  }
+  const totalTokens = entries.reduce((s, e) => s + (e.total_tokens || e.total_input_tokens || 0), 0);
+  const totalCost = entries.reduce((s, e) => s + (e.estimated_cost_usd || 0), 0);
+  const chatCalls = entries.filter(e => e.type === "chat");
+  const embedCalls = entries.filter(e => e.type === "embedding");
+  const avgTokens = chatCalls.length ? chatCalls.reduce((s, e) => s + (e.total_tokens || 0), 0) / chatCalls.length : 0;
+
+  document.getElementById("llmCards").innerHTML = `
+    <div class="card"><div class="label">Total Tokens</div><div class="value neutral">${totalTokens.toLocaleString()}</div></div>
+    <div class="card"><div class="label">Total Cost</div><div class="value accent">$${totalCost.toFixed(4)}</div></div>
+    <div class="card"><div class="label">Chat Calls</div><div class="value neutral">${chatCalls.length}</div></div>
+    <div class="card"><div class="label">Embed Calls</div><div class="value neutral">${embedCalls.length}</div></div>
+    <div class="card"><div class="label">Avg Tokens/Chat</div><div class="value neutral">${Math.round(avgTokens)}</div></div>
+    <div class="card"><div class="label">Cost/Query</div><div class="value accent">$${chatCalls.length ? (totalCost / chatCalls.length).toFixed(4) : "0"}</div></div>`;
+
+  // Recent calls table
+  const recent = entries.slice(-10).reverse();
+  let rows = recent.map(e => `<tr>
+    <td>${e.type}</td><td>${e.caller || ""}</td><td>${e.model_id?.split(".").pop() || ""}</td>
+    <td class="score-cell">${(e.input_tokens || e.total_input_tokens || 0).toLocaleString()}</td>
+    <td class="score-cell">${(e.output_tokens || 0).toLocaleString()}</td>
+    <td class="score-cell">$${(e.estimated_cost_usd || 0).toFixed(5)}</td></tr>`).join("");
+
+  document.getElementById("llmTable").innerHTML = `<table>
+    <tr><th>Type</th><th>Caller</th><th>Model</th><th>In Tokens</th><th>Out Tokens</th><th>Cost</th></tr>${rows}</table>`;
+}
+
+function renderIngestion(data) {
+  const entries = data.ingestion || [];
+  if (!entries.length) {
+    document.getElementById("ingestionCards").innerHTML = '<div class="empty">No ingestion data yet.</div>';
+    return;
+  }
+  const total = entries.length;
+  const success = entries.filter(e => e.status === "success").length;
+  const avgDuration = entries.reduce((s, e) => s + (e.total_ingestion_duration_ms || 0), 0) / total;
+  const totalChunks = entries.reduce((s, e) => s + (e.chunk?.chunk_count || 0), 0);
+
+  document.getElementById("ingestionCards").innerHTML = `
+    <div class="card"><div class="label">Documents</div><div class="value neutral">${total}</div></div>
+    <div class="card"><div class="label">Success</div><div class="value ${success === total ? 'good' : 'bad'}">${success}/${total}</div></div>
+    <div class="card"><div class="label">Avg Duration</div><div class="value neutral">${(avgDuration / 1000).toFixed(1)}s</div></div>
+    <div class="card"><div class="label">Total Chunks</div><div class="value neutral">${totalChunks}</div></div>`;
+
+  let rows = entries.slice(-10).reverse().map(e => `<tr>
+    <td>${e.document || "?"}</td><td>${e.file_type || ""}</td>
+    <td class="score-cell">${e.parse?.char_count?.toLocaleString() || 0}</td>
+    <td class="score-cell">${e.chunk?.chunk_count || 0}</td>
+    <td class="score-cell">${e.index?.success_count || 0}/${e.index ? (e.index.success_count + e.index.failure_count) : 0}</td>
+    <td class="score-cell">${((e.total_ingestion_duration_ms || 0) / 1000).toFixed(1)}s</td>
+    <td><span class="${e.status === 'success' ? 'good' : 'bad'}">${e.status || "?"}</span></td></tr>`).join("");
+
+  document.getElementById("ingestionTable").innerHTML = `<table>
+    <tr><th>Document</th><th>Type</th><th>Chars</th><th>Chunks</th><th>Indexed</th><th>Duration</th><th>Status</th></tr>${rows}</table>`;
+}
+
+function renderRetrieval(data) {
+  const entries = data.retrieval || [];
+  if (!entries.length) {
+    document.getElementById("retrievalCards").innerHTML = '<div class="empty">No retrieval data yet.</div>';
+    return;
+  }
+  const total = entries.length;
+  const avgLatency = entries.reduce((s, e) => s + (e.total_retrieval_duration_ms || 0), 0) / total;
+  const avgResults = entries.reduce((s, e) => s + (e.search?.total_results_returned || 0), 0) / total;
+  const zeroResults = entries.filter(e => (e.search?.total_results_returned || 0) === 0).length;
+
+  document.getElementById("retrievalCards").innerHTML = `
+    <div class="card"><div class="label">Queries</div><div class="value neutral">${total}</div></div>
+    <div class="card"><div class="label">Avg Latency</div><div class="value ${avgLatency < 8000 ? 'good' : 'warn'}">${(avgLatency / 1000).toFixed(1)}s</div></div>
+    <div class="card"><div class="label">Avg Results</div><div class="value neutral">${avgResults.toFixed(0)}</div></div>
+    <div class="card"><div class="label">Zero Results</div><div class="value ${zeroResults === 0 ? 'good' : 'bad'}">${zeroResults}</div></div>`;
+
+  let rows = entries.slice(-10).reverse().map(e => {
+    const q = e.query_rewrite?.original_query || "?";
+    return `<tr>
+      <td title="${q}">${q.substring(0, 40)}${q.length > 40 ? "..." : ""}</td>
+      <td class="score-cell">${e.search?.total_results_returned || 0}</td>
+      <td class="score-cell">${e.rerank?.reranker_type || ""}</td>
+      <td class="score-cell">${e.context?.chunks_used || 0}</td>
+      <td class="score-cell">${e.context?.token_count || 0}</td>
+      <td class="score-cell">${((e.total_retrieval_duration_ms || 0) / 1000).toFixed(1)}s</td>
+      <td><span class="${e.status === 'success' ? 'good' : 'bad'}">${e.status || "?"}</span></td></tr>`;
+  }).join("");
+
+  document.getElementById("retrievalTable").innerHTML = `<table>
+    <tr><th>Query</th><th>Results</th><th>Reranker</th><th>Ctx Chunks</th><th>Ctx Tokens</th><th>Latency</th><th>Status</th></tr>${rows}</table>`;
+}
+
+async function loadMetrics() {
+  try {
+    const res = await fetch("/api/metrics");
+    const data = await res.json();
+    renderRagas(data);
+    renderLLM(data);
+    renderIngestion(data);
+    renderRetrieval(data);
+    document.getElementById("lastUpdate").textContent = "Updated: " + new Date().toLocaleTimeString();
+  } catch (e) {
+    // Try loading from local file if server not running
+    try {
+      const res = await fetch("metrics_data.json");
+      const data = await res.json();
+      renderRagas(data);
+      renderLLM(data);
+      renderIngestion(data);
+      renderRetrieval(data);
+      document.getElementById("lastUpdate").textContent = "Updated: " + new Date().toLocaleTimeString() + " (file)";
+    } catch (e2) {
+      document.getElementById("ragasCards").innerHTML = '<div class="empty">Cannot load metrics. Start the server: python serve_dashboard.py</div>';
+    }
+  }
+}
+
+loadMetrics();
+setInterval(loadMetrics, 15000); // Auto-refresh every 15s
+</script>
+</body></html>

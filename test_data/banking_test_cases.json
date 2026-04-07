@@ -1,0 +1,162 @@
+[
+  {
+    "id": "BANK-001",
+    "question": "What is the minimum credit score required for a conventional mortgage?",
+    "ground_truth": "The minimum credit score required for a conventional mortgage at ACME Bank is 620.",
+    "expected_source": "mortgage_guidelines.txt",
+    "category": "mortgage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-002",
+    "question": "What is the down payment requirement for FHA loans?",
+    "ground_truth": "FHA loans require a 3.5% down payment with a credit score of 580 or above, or 10% down payment with credit scores between 500-579.",
+    "expected_source": "mortgage_guidelines.txt",
+    "category": "mortgage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-003",
+    "question": "When can PMI be cancelled on a conventional mortgage?",
+    "ground_truth": "PMI can be cancelled when the loan-to-value ratio reaches 80% based on the original property value. Automatic PMI termination occurs when the loan-to-value ratio reaches 78%.",
+    "expected_source": "mortgage_guidelines.txt",
+    "category": "mortgage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-004",
+    "question": "What are the interest rate ranges for personal loans?",
+    "ground_truth": "Personal loan interest rates range from 8.5% to 14.99% per annum depending on the applicant's credit profile. Fixed rate loans are available for tenures of 12, 24, 36, 48, and 60 months.",
+    "expected_source": "loan_policy.txt",
+    "category": "personal_loan",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-005",
+    "question": "What is the prepayment penalty for fixed rate personal loans?",
+    "ground_truth": "The prepayment penalty for fixed rate personal loans is 3% of the outstanding principal if closed within the first 12 months, 2% if closed between 12-24 months, and zero thereafter. No prepayment penalty applies to variable rate loans.",
+    "expected_source": "loan_policy.txt",
+    "category": "personal_loan",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-006",
+    "question": "What is the maximum amount for an unsecured personal loan?",
+    "ground_truth": "The maximum personal loan amount is $50,000 for unsecured loans. Secured personal loans backed by fixed deposits or securities can go up to $200,000.",
+    "expected_source": "loan_policy.txt",
+    "category": "personal_loan",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-007",
+    "question": "What transaction amount triggers automatic flagging under BSA compliance?",
+    "ground_truth": "All transactions above $10,000 are automatically flagged for review under the Bank Secrecy Act (BSA) compliance program.",
+    "expected_source": "fraud_prevention.txt",
+    "category": "fraud",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-008",
+    "question": "What is the customer liability for unauthorized transactions reported late?",
+    "ground_truth": "Customer liability for unauthorized transactions is limited to $50 if reported within 2 business days, $500 if reported within 60 days, and unlimited thereafter as per Regulation E.",
+    "expected_source": "fraud_prevention.txt",
+    "category": "fraud",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-009",
+    "question": "What authentication is required for mobile banking transactions above $5,000?",
+    "ground_truth": "Biometric verification (fingerprint or facial recognition) is required for mobile banking transactions above $5,000.",
+    "expected_source": "fraud_prevention.txt",
+    "category": "fraud",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-010",
+    "question": "What is Enhanced Due Diligence and when is it required?",
+    "ground_truth": "Enhanced Due Diligence (EDD) is mandatory for Politically Exposed Persons (PEPs), customers from high-risk jurisdictions listed by FATF, and customers with complex ownership structures. EDD requires senior management approval for account opening, source of wealth declaration, beneficial ownership identification for entities with 25% or more ownership, and ongoing monitoring with quarterly reviews.",
+    "expected_source": "kyc_aml_policy.txt",
+    "category": "compliance",
+    "difficulty": "hard"
+  },
+  {
+    "id": "BANK-011",
+    "question": "How long must the bank retain transaction records for AML compliance?",
+    "ground_truth": "The bank must retain all transaction records for a minimum of 5 years from the date of the transaction.",
+    "expected_source": "kyc_aml_policy.txt",
+    "category": "compliance",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-012",
+    "question": "What sanctions lists are used for customer screening?",
+    "ground_truth": "All customers and transactions are screened against OFAC SDN (Specially Designated Nationals) list, UN Security Council sanctions list, EU consolidated sanctions list, and UK HM Treasury sanctions list.",
+    "expected_source": "kyc_aml_policy.txt",
+    "category": "compliance",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-013",
+    "question": "What are the rewards for the ACME Platinum credit card?",
+    "ground_truth": "ACME Platinum offers 3% cash back on travel and dining, 2% on groceries, 1% on everything else, plus airport lounge access. Points expire after 24 months of account inactivity.",
+    "expected_source": "credit_card_terms.txt",
+    "category": "credit_card",
+    "difficulty": "easy"
+  },
+  {
+    "id": "BANK-014",
+    "question": "What is the penalty APR and when does it apply?",
+    "ground_truth": "The penalty APR is 29.99% and is applied after 60 days of delinquency. It is reviewed after 6 months of on-time payments.",
+    "expected_source": "credit_card_terms.txt",
+    "category": "credit_card",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-015",
+    "question": "How are credit card payments applied to balances?",
+    "ground_truth": "Payments are applied first to the minimum payment, then to the highest APR balances.",
+    "expected_source": "credit_card_terms.txt",
+    "category": "credit_card",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-016",
+    "question": "Compare the down payment requirements for conventional loans versus VA loans",
+    "ground_truth": "Conventional loans require a minimum 5% down payment, or 3% for first-time buyers through the HomeReady program. VA loans offer 0% down payment for eligible veterans.",
+    "expected_source": "mortgage_guidelines.txt",
+    "category": "mortgage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-017",
+    "question": "What are the penalties for AML non-compliance?",
+    "ground_truth": "Regulatory fines for AML violations can range from $25,000 to $1,000,000 per violation per day. Individual officers may face criminal prosecution with penalties up to 10 years imprisonment.",
+    "expected_source": "kyc_aml_policy.txt",
+    "category": "compliance",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-018",
+    "question": "What dual authorization controls exist for wire transfers?",
+    "ground_truth": "Dual authorization is required for all wire transfers exceeding $25,000. Segregation of duties is enforced so no single employee can initiate, approve, and execute a transaction.",
+    "expected_source": "fraud_prevention.txt",
+    "category": "fraud",
+    "difficulty": "medium"
+  },
+  {
+    "id": "BANK-019",
+    "question": "What is the minimum income requirement for a self-employed person applying for a personal loan?",
+    "ground_truth": "The minimum annual income requirement for self-employed individuals applying for a personal loan is $50,000. They must also provide 2 years of tax returns, business registration certificate, last 2 years audited financial statements, and GST returns for the last 4 quarters.",
+    "expected_source": "loan_policy.txt",
+    "category": "personal_loan",
+    "difficulty": "hard"
+  },
+  {
+    "id": "BANK-020",
+    "question": "What encryption standards does the bank use for customer data?",
+    "ground_truth": "All customer data is encrypted at rest using AES-256 encryption and in transit using TLS 1.3.",
+    "expected_source": "fraud_prevention.txt",
+    "category": "fraud",
+    "difficulty": "easy"
+  }
+]

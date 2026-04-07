@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Document Upload (AWS)</title>
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<div class="container">
+  <h1>📄 Document Upload</h1>
+  <form id="uploadForm">
+    <div class="form-group">
+      <label for="file">Select Document (PDF, DOCX, TXT)</label>
+      <input type="file" id="file" accept=".pdf,.docx,.txt" required>
+    </div>
+    <div class="form-group">
+      <label for="department">Department</label>
+      <select id="department">
+        <option value="general">General</option>
+        <option value="finance">Finance</option>
+        <option value="engineering">Engineering</option>
+        <option value="hr">HR</option>
+        <option value="legal">Legal</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="accessLevel">Access Level</label>
+      <select id="accessLevel">
+        <option value="public">Public</option>
+        <option value="internal">Internal</option>
+        <option value="confidential">Confidential</option>
+      </select>
+    </div>
+    <button type="submit" id="uploadBtn">Upload & Process</button>
+  </form>
+  <div id="status" class="status" hidden></div>
+</div>
+<script>
+const API_BASE = window.location.origin + "/api"; // Local server or replace with API Gateway URL
+
+document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const file = document.getElementById("file").files[0];
+  const department = document.getElementById("department").value;
+  const accessLevel = document.getElementById("accessLevel").value;
+  const status = document.getElementById("status");
+  const btn = document.getElementById("uploadBtn");
+
+  if (!file) return;
+
+  btn.disabled = true;
+  btn.textContent = "Uploading...";
+  status.hidden = false;
+  status.className = "status info";
+  status.textContent = "Uploading document...";
+
+  try {
+    // 1. Get presigned S3 URL
+    const sasRes = await fetch(`${API_BASE}/get-upload-url`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({filename: file.name, content_type: file.type}),
+    });
+    const {upload_url} = await sasRes.json();
+
+    // 2. Upload directly to S3
+    await fetch(upload_url, {
+      method: "PUT",
+      headers: {"Content-Type": file.type},
+      body: file,
+    });
+
+    // 3. Queue processing via SQS
+    await fetch(`${API_BASE}/queue-processing`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        blob_name: file.name,
+        metadata: {department, access_level: accessLevel},
+      }),
+    });
+
+    status.className = "status success";
+    status.textContent = `✅ "${file.name}" uploaded and queued for processing.`;
+  } catch (err) {
+    status.className = "status error";
+    status.textContent = `❌ Upload failed: ${err.message}`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Upload & Process";
+  }
+});
+</script>
+</body></html>

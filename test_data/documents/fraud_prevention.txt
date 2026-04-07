@@ -1,0 +1,22 @@
+FRAUD PREVENTION AND DETECTION POLICY — ACME BANK
+Effective Date: March 15, 2025
+Department: Risk Management
+Classification: Confidential
+
+1. TRANSACTION MONITORING
+All transactions above $10,000 are automatically flagged for review under the Bank Secrecy Act (BSA) compliance program. Real-time transaction monitoring uses machine learning models to detect anomalous patterns including unusual transaction velocity, geographic inconsistencies, and deviation from customer spending profiles. Suspicious Activity Reports (SARs) must be filed within 30 calendar days of initial detection.
+
+2. IDENTITY VERIFICATION
+Multi-factor authentication (MFA) is mandatory for all digital banking transactions exceeding $500. Biometric verification (fingerprint or facial recognition) is required for mobile banking transactions above $5,000. Knowledge-based authentication (KBA) is used as a fallback when biometric verification is unavailable. Customer identity must be re-verified every 24 months or upon detection of suspicious activity.
+
+3. CARD FRAUD PREVENTION
+EMV chip technology is mandatory for all debit and credit cards issued after January 2024. Contactless payment limit is set at $250 per transaction without PIN verification. Real-time SMS and push notification alerts are sent for all card transactions. Temporary card freeze can be activated by customers through the mobile app or by calling the 24/7 fraud hotline at 1-800-555-FRAUD.
+
+4. INTERNAL FRAUD CONTROLS
+Dual authorization is required for all wire transfers exceeding $25,000. Employee access to customer accounts is logged and audited quarterly. Segregation of duties is enforced — no single employee can initiate, approve, and execute a transaction. Whistleblower hotline is available at 1-800-555-ETHICS for reporting suspected internal fraud.
+
+5. FRAUD LIABILITY
+Customer liability for unauthorized transactions is limited to $50 if reported within 2 business days, $500 if reported within 60 days, and unlimited thereafter as per Regulation E. The bank's zero-liability policy covers all unauthorized credit card transactions reported within 60 days. Provisional credit is issued within 10 business days of a fraud claim while investigation is ongoing.
+
+6. CYBER SECURITY MEASURES
+All customer data is encrypted at rest using AES-256 encryption and in transit using TLS 1.3. Penetration testing is conducted quarterly by an independent third-party security firm. Security Operations Center (SOC) operates 24/7 monitoring all banking systems. Incident response plan must be activated within 1 hour of detecting a security breach.

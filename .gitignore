@@ -1,0 +1,24 @@
+# Environment
+.env
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Dashboard data
+dashboard/metrics_data.json
+
+# Eval reports
+evals/report/
+
+# IDE
+.vscode/
+.idea/
+
+# Deploy artifacts
+deploy/*.zip
