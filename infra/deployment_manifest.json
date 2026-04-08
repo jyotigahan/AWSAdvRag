@@ -1,0 +1,28 @@
+{
+  "deployed_at": "2026-04-08 01:41:10",
+  "region": "us-east-1",
+  "suffix": "7g1abf",
+  "resources": {
+    "s3_docs": "rag-adv-docs-7g1abf",
+    "s3_site": "rag-adv-site-7g1abf",
+    "sqs_queue": "https://sqs.us-east-1.amazonaws.com/533600913938/rag-adv-queue-7g1abf",
+    "sqs_dlq": "rag-adv-dlq-7g1abf",
+    "opensearch_collection": "rag-adv-search-7g1abf",
+    "opensearch_endpoint": "https://fjlx682uuvbfg9cwdca9.us-east-1.aoss.amazonaws.com",
+    "lambda_ingest": "rag-adv-ingest-7g1abf",
+    "lambda_api": "rag-adv-api-7g1abf",
+    "lambda_api_upload": "rag-adv-api-7g1abf-upload",
+    "lambda_api_queue": "rag-adv-api-7g1abf-queue",
+    "api_gateway": "rag-adv-gateway-7g1abf",
+    "api_url": "https://65qcyw8s63.execute-api.us-east-1.amazonaws.com/prod",
+    "site_url": "http://rag-adv-site-7g1abf.s3-website-us-east-1.amazonaws.com",
+    "iam_role": "rag-adv-lambda-role-7g1abf"
+  },
+  "urls": {
+    "upload_ui": "http://rag-adv-site-7g1abf.s3-website-us-east-1.amazonaws.com/index.html",
+    "query_ui": "http://rag-adv-site-7g1abf.s3-website-us-east-1.amazonaws.com/query.html",
+    "dashboard": "http://rag-adv-site-7g1abf.s3-website-us-east-1.amazonaws.com/dashboard.html",
+    "api_query": "https://65qcyw8s63.execute-api.us-east-1.amazonaws.com/prod/query",
+    "api_upload": "https://65qcyw8s63.execute-api.us-east-1.amazonaws.com/prod/get-upload-url"
+  }
+}

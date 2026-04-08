@@ -67,5 +67,5 @@ def rag_query(
         "answer": answer,
         "sources": sources,
         "retrieved_chunks": len(ranked),
-        "context_used": context_text[:500] + "..." if len(context_text) > 500 else context_text,
+        "context_used": context_text,
     }

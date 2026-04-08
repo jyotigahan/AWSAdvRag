@@ -33,6 +33,14 @@ if not metrics_logger.handlers:
 s3_client = boto3.client("s3")
 sqs_client = boto3.client("sqs")
 
+# RAGAS auto-eval logger
+ragas_logger = logging.getLogger("MetricsRAGAS")
+ragas_logger.setLevel(logging.INFO)
+if not ragas_logger.handlers:
+    rh = logging.StreamHandler()
+    rh.setFormatter(logging.Formatter("%(name)s | %(message)s"))
+    ragas_logger.addHandler(rh)
+
 
 def _ms_since(start: float) -> float:
     return round((time.time() - start) * 1000, 2)
@@ -88,6 +96,91 @@ def queue_processing_handler(event, context):
     except Exception as e:
         logger.error(f"queue-processing error: {e}")
         return _response(500, {"error": str(e)})
+
+
+def _run_auto_eval(question: str, answer: str, context: str) -> dict:
+    """Run lightweight RAGAS evaluation automatically after each query."""
+    try:
+        from bedrock_llm import chat_completion
+
+        scores = {}
+
+        # 1. Faithfulness — are claims in the answer supported by context?
+        faith_resp = chat_completion(
+            system_prompt="You are a fact-checking assistant. Return ONLY a number between 0.0 and 1.0.",
+            user_prompt=f"""Score how well the answer is supported by the context.
+1.0 = every claim in the answer can be found in the context
+0.5 = some claims are supported, some are not
+0.0 = the answer contains information not found in the context at all
+
+Context:
+{context[:3000]}
+
+Answer:
+{answer}
+
+Return ONLY the numeric score:""",
+            temperature=0.0, max_tokens=5, caller="auto_eval_faithfulness",
+        )
+        try:
+            scores["Faithfulness"] = round(min(1.0, max(0.0, float(faith_resp.strip()))), 4)
+        except ValueError:
+            scores["Faithfulness"] = 0.0
+
+        # 2. Groundedness — LLM judge 1-5
+        ground_resp = chat_completion(
+            system_prompt="You are an evaluation assistant. Return ONLY a number 1-5.",
+            user_prompt=f"""Score how well the answer is grounded in the context.
+5 = fully grounded, every statement comes from the context
+3 = partially grounded, some statements are from context
+1 = completely ungrounded, answer ignores the context
+
+Context:
+{context[:3000]}
+
+Question: {question}
+Answer: {answer}
+
+Return ONLY the numeric score:""",
+            temperature=0.0, max_tokens=5, caller="auto_eval_groundedness",
+        )
+        try:
+            scores["Groundedness"] = round(min(5.0, max(1.0, float(ground_resp.strip()))), 4)
+        except ValueError:
+            scores["Groundedness"] = 0.0
+
+        # 3. Answer Relevance — does the answer address the question?
+        rel_resp = chat_completion(
+            system_prompt="You are an evaluation assistant. Return ONLY a number between 0.0 and 1.0.",
+            user_prompt=f"""Score how relevant the answer is to the question.
+1.0 = perfectly answers the question
+0.5 = partially relevant
+0.0 = completely irrelevant to the question
+
+Question: {question}
+Answer: {answer}
+
+Return ONLY the numeric score:""",
+            temperature=0.0, max_tokens=5, caller="auto_eval_relevance",
+        )
+        try:
+            scores["Answer Relevance"] = round(min(1.0, max(0.0, float(rel_resp.strip()))), 4)
+        except ValueError:
+            scores["Answer Relevance"] = 0.0
+
+        # Log to MetricsRAGAS
+        ragas_logger.info(json.dumps({
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "question": question,
+            "scores": scores,
+            "eval_type": "auto",
+        }))
+
+        return scores
+
+    except Exception as e:
+        logger.error(f"Auto-eval error: {e}")
+        return {}
 
 
 def query_handler(event, context):
@@ -210,6 +303,9 @@ def query_handler(event, context):
         metrics["status"] = "success"
         metrics_logger.info(json.dumps(metrics))
 
+        # ── 7. Auto RAGAS Evaluation (runs after answer is generated) ──
+        eval_scores = _run_auto_eval(question, answer, context_text)
+
         return _response(200, {
             "question": question,
             "rewritten_query": rewritten,
@@ -220,6 +316,7 @@ def query_handler(event, context):
                 "generation_tokens": gen_result["total_tokens"],
                 "generation_cost_usd": gen_result["cost_usd"],
             },
+            "eval_scores": eval_scores,
         })
 
     except Exception as e:

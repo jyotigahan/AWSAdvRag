@@ -143,7 +143,7 @@ def main():
     print(f"OPENSEARCH_ENDPOINT={endpoint}")
     print(f"OPENSEARCH_INDEX_NAME=rag-index")
     print(f"BEDROCK_EMBEDDING_MODEL_ID=amazon.titan-embed-text-v2:0")
-    print(f"BEDROCK_CHAT_MODEL_ID=us.anthropic.claude-sonnet-4-20250514-v1:0")
+    print(f"BEDROCK_CHAT_MODEL_ID=us.amazon.nova-micro-v1:0")
 
     # Auto-write .env
     env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
@@ -152,7 +152,7 @@ def main():
 AWS_REGION={REGION}
 
 BEDROCK_EMBEDDING_MODEL_ID=amazon.titan-embed-text-v2:0
-BEDROCK_CHAT_MODEL_ID=us.anthropic.claude-sonnet-4-20250514-v1:0
+BEDROCK_CHAT_MODEL_ID=us.amazon.nova-micro-v1:0
 
 OPENSEARCH_ENDPOINT={endpoint}
 OPENSEARCH_INDEX_NAME=rag-index

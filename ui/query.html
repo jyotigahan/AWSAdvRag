@@ -54,6 +54,10 @@
       <h3>Sources</h3>
       <p id="sources"></p>
     </div>
+    <div class="result-section">
+      <h3>Quality Scores (Auto-RAGAS)</h3>
+      <div id="evalScores"></div>
+    </div>
   </div>
 </div>
 <script>
@@ -83,6 +87,28 @@ document.getElementById("queryForm").addEventListener("submit", async (e) => {
     document.getElementById("answer").textContent = data.answer;
     document.getElementById("rewritten").textContent = data.rewritten_query;
     document.getElementById("sources").textContent = data.sources.join(", ") || "None";
+
+    // Show eval scores
+    const evalDiv = document.getElementById("evalScores");
+    if (data.eval_scores && Object.keys(data.eval_scores).length > 0) {
+      const colors = {good: "#2e7d32", warn: "#f57f17", bad: "#c62828"};
+      let html = '<div style="display:flex;gap:1rem;flex-wrap:wrap;">';
+      for (const [name, val] of Object.entries(data.eval_scores)) {
+        const isGrounded = name === "Groundedness";
+        const threshold = isGrounded ? [2.5, 3.5] : [0.5, 0.7];
+        const color = val >= threshold[1] ? colors.good : val >= threshold[0] ? colors.warn : colors.bad;
+        const display = isGrounded ? val.toFixed(1) + "/5" : val.toFixed(3);
+        html += '<div style="background:#f5f5f5;padding:0.5rem 1rem;border-radius:6px;text-align:center;border-left:4px solid ' + color + '">';
+        html += '<div style="font-size:0.75rem;color:#666;">' + name + '</div>';
+        html += '<div style="font-size:1.3rem;font-weight:bold;color:' + color + '">' + display + '</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+      evalDiv.innerHTML = html;
+    } else {
+      evalDiv.innerHTML = '<p style="color:#999;">Evaluation not available</p>';
+    }
+
     result.hidden = false;
   } catch (err) {
     alert("Query failed: " + err.message);
