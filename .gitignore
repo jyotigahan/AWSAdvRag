@@ -22,3 +22,10 @@ evals/report/
 
 # Deploy artifacts
 deploy/*.zip
+
+# Local dev (Chroma / Ollama)
+local/.venv/
+local/__pycache__/
+local/chroma_data/
+.venv/
+venv/
