@@ -1,0 +1,81 @@
+LOAN PROCESSING POLICY — ACME BANK
+Effective Date: January 1, 2025
+Department: Lending Operations
+Classification: Internal
+
+1. PURPOSE AND SCOPE
+This policy establishes the end-to-end loan processing procedures for all retail and commercial loan products offered by ACME Bank. It applies to all lending staff, loan officers, underwriters, and operations personnel involved in origination, underwriting, approval, disbursement, and post-disbursement monitoring. Compliance with this policy is mandatory and subject to periodic audit by the Risk and Compliance division.
+
+2. LOAN APPLICATION INTAKE
+All loan applications must be submitted through the ACME Bank Loan Origination System (LOS). Walk-in applications are accepted at branch level and must be digitized and entered into LOS within one business day of receipt. Online applications submitted via the customer portal are automatically imported into LOS. Each application is assigned a unique Loan Reference Number (LRN) upon submission. Incomplete applications are placed in a pending queue and the applicant is notified within 2 business days specifying the missing information. Applications that remain incomplete for more than 15 calendar days are automatically rejected and must be resubmitted.
+
+3. INITIAL ELIGIBILITY SCREENING
+Loan officers must conduct an initial eligibility screen within 2 business days of receiving a complete application. The screening covers: (a) identity verification against government-issued ID, (b) credit bureau pull from all three major bureaus — Equifax, Experian, and TransUnion, (c) OFAC/sanctions list check, (d) anti-money laundering (AML) flag review, and (e) income verification against stated figures. Applications failing the OFAC or AML check must be immediately escalated to the Compliance team and must not be processed further without written clearance.
+
+4. CREDIT UNDERWRITING PROCESS
+4.1 Credit Score Thresholds
+— Score 750 and above: Auto-approve pathway, subject to income and DTI verification.
+— Score 680–749: Standard underwriting review required.
+— Score 620–679: Enhanced underwriting with mandatory committee review.
+— Score below 620: Decline unless secured by eligible collateral at a minimum LTV of 60%.
+
+4.2 Debt-to-Income (DTI) Ratio
+The maximum allowable DTI is 43% inclusive of the proposed loan EMI. For jumbo loans above $500,000, the maximum DTI is 36%. DTI is calculated using gross monthly income verified through tax returns, pay stubs, or bank statements. Business income for self-employed applicants is averaged over the most recent 2 fiscal years.
+
+4.3 Collateral Valuation
+For secured loans, collateral must be appraised by an ACME Bank-empaneled valuer. Appraisal reports older than 90 days are not accepted. Loan-to-value (LTV) ratios must not exceed: 80% for residential property, 70% for commercial property, 60% for land, and 90% for fixed deposits. A second appraisal is required when the loan amount exceeds $1,000,000 or when the first appraisal is contested by the applicant.
+
+5. APPROVAL AUTHORITY MATRIX
+Loan amounts up to $50,000: Loan Officer approval.
+Loan amounts $50,001–$250,000: Branch Manager approval.
+Loan amounts $250,001–$1,000,000: Regional Credit Committee approval.
+Loan amounts above $1,000,000: Central Credit Committee approval with CFO co-sign.
+All approvals must be documented in LOS with a timestamp, approver employee ID, and approval rationale. Verbal approvals are not recognized and have no binding effect.
+
+6. LOAN SANCTIONING AND OFFER LETTER
+Upon approval, the system generates a Loan Sanction Letter within 1 business day. The sanction letter must include: approved loan amount, applicable interest rate and rate type (fixed/variable), loan tenure, EMI schedule, processing fees, prepayment terms, and any conditions precedent to disbursement. The applicant has 15 calendar days to accept the offer. Acceptance must be in writing via the customer portal or a signed hard copy submitted at the branch. Expired offers must be reprocessed through underwriting if the applicant wishes to proceed.
+
+7. DOCUMENTATION AND KYC VERIFICATION
+The following documents must be collected and verified before disbursement:
+— Government-issued photo ID (passport, driver's license, or national ID).
+— Proof of address dated within the last 3 months (utility bill, bank statement, or lease agreement).
+— Last 3 months salary slips or payroll deposits for salaried applicants.
+— Last 2 years federal income tax returns (Form 1040 or business equivalent).
+— Bank statements for the last 6 months from all active accounts.
+— Employment verification letter on company letterhead for salaried applicants.
+— Business registration certificate, audited financials for the last 2 years, and last 4 quarters of sales tax returns for self-employed applicants.
+All documents must be scanned and attached to the LRN in LOS. Physical originals must be retained at the originating branch for a minimum of 7 years post loan closure.
+
+8. DISBURSEMENT PROCEDURE
+8.1 Pre-Disbursement Checklist
+Prior to disbursement, the operations team must confirm: (a) all conditions precedent are satisfied, (b) loan agreement is signed by authorized signatories, (c) insurance endorsements are in place for secured loans, (d) collateral registration is complete where applicable, and (e) any applicable government duties or fees are paid.
+
+8.2 Disbursement Timeline
+Disbursement must occur within 3–5 business days of all pre-disbursement conditions being met. For construction loans or project finance, disbursement is made in tranches linked to project completion milestones verified by an empaneled engineer. For loans above $500,000, fund transfer must be initiated by the Disbursement team and confirmed by the Operations Manager before release.
+
+8.3 Disbursement Methods
+Funds are credited directly to the borrower's ACME Bank account. Third-party disbursement (e.g., directly to a property seller or dealer) is permitted for auto and home loans, subject to the beneficiary's bank details being verified and documented. Cash disbursements are prohibited for any loan amount above $1,000.
+
+9. POST-DISBURSEMENT MONITORING
+9.1 EMI Collection
+EMIs are collected via auto-debit on the due date as specified in the loan agreement. Borrowers must maintain a minimum balance equal to the EMI amount in their designated repayment account by the due date. If auto-debit fails, the system triggers an SMS and email alert to the borrower within 24 hours. A second debit attempt is made after 3 business days. If the second attempt also fails, the account is flagged as a missed payment and the late payment penalty is applied.
+
+9.2 Delinquency Management
+Accounts with 1–29 days overdue: Soft collection — automated reminders via SMS, email, and in-app notification.
+Accounts with 30–89 days overdue: Active collection — loan officer outreach, payment plan discussion.
+Accounts with 90+ days overdue (NPA): Referred to the Special Assets Management (SAM) team. Credit bureau reporting is triggered at 30 days overdue.
+
+9.3 Loan Restructuring
+Borrowers facing genuine financial hardship may apply for loan restructuring once during the loan tenure. Restructuring options include: EMI deferral of up to 3 months, tenure extension of up to 12 months, or temporary interest-only payment period of up to 6 months. Restructuring requests must be submitted in writing and approved by the Branch Manager for loans up to $250,000, and by the Regional Credit Committee for higher amounts. Restructured loans are reported to credit bureaus as restructured.
+
+10. PREPAYMENT AND FORECLOSURE
+Borrowers may prepay part or full outstanding principal at any time subject to prepayment charges outlined in the loan agreement. Partial prepayment must be a minimum of 3 EMI amounts. Full foreclosure requires a written request at least 7 days in advance. The Foreclosure Statement issued by ACME Bank is valid for 10 business days. After foreclosure payment is confirmed, the No Objection Certificate (NOC) and collateral release documents must be issued to the borrower within 15 working days.
+
+11. REGULATORY COMPLIANCE
+All loan processing activities must comply with applicable federal and state lending regulations including the Equal Credit Opportunity Act (ECOA), Fair Housing Act (FHA), Truth in Lending Act (TILA), Real Estate Settlement Procedures Act (RESPA), and Bank Secrecy Act (BSA). Any suspected discriminatory lending practices must be reported to the Compliance Hotline immediately. Annual compliance training is mandatory for all lending staff. Regulatory examination requests must be responded to within the timelines specified by the examiner.
+
+12. POLICY EXCEPTIONS
+Exceptions to this policy require written approval from the Chief Credit Officer. Exceptions must be logged in the Policy Exception Register maintained by the Risk team. Each exception must document the reason, the risk mitigants in place, the approver, and the expiry date of the exception. Recurring exceptions for the same loan type must trigger a policy review within 60 days.
+
+13. RECORD RETENTION
+Loan files, agreements, and all supporting documentation must be retained for a minimum of 7 years from the date of loan closure or write-off, whichever is later. Electronic records in LOS are subject to the same retention schedule. Records required for pending litigation or regulatory inquiry must be retained until final resolution regardless of the standard retention period.
